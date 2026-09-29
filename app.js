@@ -28,8 +28,17 @@ function addBusinessDays(date, days) {
   return d;
 }
 
+// Business days from today to date (weekends excluded); negative once past due.
 function daysUntil(date) {
-  return Math.round((startOfDay(date) - TODAY) / 86400000);
+  const target = startOfDay(date);
+  const step = target >= TODAY ? 1 : -1;
+  const d = new Date(TODAY);
+  let count = 0;
+  while (d.getTime() !== target.getTime()) {
+    d.setDate(d.getDate() + step);
+    if (d.getDay() !== 0 && d.getDay() !== 6) count += step;
+  }
+  return count;
 }
 
 function fmtDate(date) {
@@ -662,7 +671,7 @@ function renderRequests() {
 
   $('prrKpis').innerHTML = [
     ['Open requests', open.length, `${requests.length} total this period`, 'accent-blue'],
-    ['Response due ≤ 2 days', dueSoon.length, dueSoon.filter((r) => daysUntil(dueDate(r)) < 0).length + ' overdue', 'accent-gold'],
+    ['Due within 2 business days', dueSoon.length, dueSoon.filter((r) => daysUntil(dueDate(r)) < 0).length + ' overdue', 'accent-gold'],
     ['AI suggestions awaiting review', awaiting, 'Human approval required', 'accent-red'],
     ['Delivered', delivered.length, 'via GovQA portal', 'accent-green']
   ].map(([label, value, sub, cls]) => `
@@ -674,7 +683,7 @@ function renderRequests() {
     .sort((a, b) => (a.status === 'Delivered') - (b.status === 'Delivered') || dueDate(a) - dueDate(b))
     .map((req) => {
       const days = daysUntil(dueDate(req));
-      const dueNote = req.status === 'Delivered' ? 'responded' : days < 0 ? `${-days}d overdue` : days === 0 ? 'today' : `in ${days}d`;
+      const dueNote = req.status === 'Delivered' ? 'responded' : days < 0 ? `${plural(-days, 'business day')} overdue` : days === 0 ? 'due today' : `${plural(days, 'business day')} left`;
       const pending = pendingCount(req.id);
       const notScanned = req.status === 'Received';
       return `
@@ -707,7 +716,7 @@ function renderRequestWorkspace() {
       : `<strong>${plural(hiddenHere, 'restricted record')}</strong> in this request ${hiddenHere === 1 ? 'is' : 'are'} reviewed by a department records specialist. Your role can't open CJIS content.`;
 
   $('reqTitle').innerHTML = `<span class="mono">${req.id}</span> · ${escapeHtml(req.requester)}`;
-  $('reqMeta').textContent = `${req.description} Received ${fmtDate(req.received)} · 5-day response due ${fmtDate(dueDate(req))} · Assigned to ${req.assignee}`;
+  $('reqMeta').textContent = `${req.description} Received ${fmtDate(req.received)} · Response due ${fmtDate(dueDate(req))} (5 business days) · Assigned to ${req.assignee}`;
 
   const step = STATUSES.indexOf(req.status);
   $('reqStepper').innerHTML = STATUSES.map((s, i) => `<li class="${i < step ? 'done' : i === step ? 'current' : ''}">${s}</li>`).join('');
