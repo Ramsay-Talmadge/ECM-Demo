@@ -1,12 +1,14 @@
 # Records Hub: Public Records Request Demo
 
+**Live demo: https://ramsay-talmadge.github.io/ECM-Demo/**
+
 A browser prototype of the public records request (PRR) workflow inside an enterprise content management system: AI-suggested redactions, human review, an RCW exemption log, and an audit trail separating AI actions from human decisions.
 
 It's a demo, not a production system. All records and people are fictional sample data held in memory. The "AI" is a deterministic rules-and-entities simulation standing in for a real model. Reloading the page (or **Reset demo data**) restores the starting state.
 
 ## Run it
 
-No install or build step. Download the repo and open `index.html` in a modern browser.
+Open the [live demo](https://ramsay-talmadge.github.io/ECM-Demo/) in a modern browser. To run it locally, download the repo and open `index.html`. There's no install or build step.
 
 ## The core loop
 
