@@ -17,6 +17,13 @@ No install or build step. Download the repo and open `index.html` in a modern br
 5. **Exemption log and delivery.** An exemption log is generated for the requester, and the package is marked delivered to GovQA.
 6. **Audit.** Every AI suggestion and human decision is logged with actor, user and time. The AI & Audit view summarizes acceptance rate, rejections (possible false positives) and manual additions (possible false negatives).
 
+## Retention and legal holds
+
+- Each record carries a retention rule by department and series. A nightly "System" job flags records whose retention period has been met.
+- A record can't be destroyed while it's under a **legal hold**, is **responsive to an open public records request**, or is permanent/archival. The eligibility table shows exactly which blocker applies.
+- Eligible records are gathered into a **destruction log**, routed for e-signature (Department Director → Records Officer), then executed. Blockers are re-checked at execution, destroyed records leave the library, and the log is kept permanently as the certificate of destruction.
+- The coordinator can place and release legal holds. Every action is audited.
+
 ## Roles
 
 Switch users from the sidebar:

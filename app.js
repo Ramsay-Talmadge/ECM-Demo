@@ -106,7 +106,7 @@ function canReview(rec) {
 const records = [
   {
     id: 'REC-1001', title: 'Contract PW-2026-031: Bear Creek Trail culvert replacement', dept: 'Public Works', type: 'Contract',
-    date: daysAgo(64), sensitivity: 'Internal', retention: '6 yrs after completion', legalHold: false,
+    date: daysAgo(64), sensitivity: 'Internal', retention: '6 yrs after completion',
     body: [
       'Contractor: Cascade Civil Works LLC, 4410 148th Ave NE, Redmond, WA 98052',
       'Contract amount: $412,650.00, not to exceed. Substantial completion within 90 days of NTP.',
@@ -119,7 +119,7 @@ const records = [
   },
   {
     id: 'REC-1002', title: 'Council agenda memo: culvert emergency authorization', dept: 'City Clerk', type: 'Council Memo',
-    date: daysAgo(58), sensitivity: 'Internal', retention: 'Permanent (archival)', legalHold: true,
+    date: daysAgo(58), sensitivity: 'Internal', retention: 'Permanent (archival)',
     body: [
       'To: Mayor and City Council. From: Public Works Director.',
       'Recommended action: ratify emergency authorization for the Bear Creek Trail culvert replacement.',
@@ -133,7 +133,7 @@ const records = [
   },
   {
     id: 'REC-1003', title: 'Email: culvert failure inspection notes', dept: 'Public Works', type: 'Email',
-    date: daysAgo(61), sensitivity: 'Internal', retention: '2 yrs', legalHold: false,
+    date: daysAgo(61), sensitivity: 'Internal', retention: '2 yrs',
     body: [
       'From: sortiz@redmond.gov  To: pw-stormwater@redmond.gov',
       'Resident report received from Linda Moreau, 8123 NE 116th St, cell (425) 555-0199, about trail flooding.',
@@ -147,7 +147,7 @@ const records = [
   },
   {
     id: 'REC-1004', title: 'Police incident report RPD-26-004417: vehicle prowl', dept: 'Police', type: 'Incident Report',
-    date: daysAgo(19), sensitivity: 'Restricted (CJIS)', retention: '6 yrs', legalHold: false,
+    date: daysAgo(19), sensitivity: 'Restricted (CJIS)', retention: '6 yrs',
     body: [
       'Incident: Vehicle prowl, Downtown Park lot, 16101 Redmond Way. Reported 18:42.',
       'Victim: Priya Raman, DOB 03/14/1991, (206) 555-0178',
@@ -163,7 +163,7 @@ const records = [
   },
   {
     id: 'REC-1005', title: 'Case file RPD-26-003902: burglary (active investigation)', dept: 'Police', type: 'Case File',
-    date: daysAgo(33), sensitivity: 'Restricted (CJIS)', retention: 'Until case closed + 6 yrs', legalHold: true, partitioned: true,
+    date: daysAgo(33), sensitivity: 'Restricted (CJIS)', retention: 'Until case closed + 6 yrs', partitioned: true,
     body: [
       'ACTIVE INVESTIGATION: partitioned case file, access limited to assigned detectives.',
       'Lead detective: Det. R. Castillo #2861.',
@@ -173,7 +173,7 @@ const records = [
   },
   {
     id: 'REC-1006', title: 'Personnel action: termination, Parks Maintenance Worker II', dept: 'Human Resources', type: 'Personnel Record',
-    date: daysAgo(27), sensitivity: 'Confidential', retention: '6 yrs after separation', legalHold: false,
+    date: daysAgo(27), sensitivity: 'Confidential', retention: '6 yrs after separation',
     body: [
       'Employee: Derek Collins, Employee ID 40219, Parks Maintenance Worker II',
       'SSN: 541-22-8734',
@@ -190,7 +190,7 @@ const records = [
   },
   {
     id: 'REC-1007', title: 'Performance evaluation: Parks Maintenance Worker II (2025)', dept: 'Human Resources', type: 'Personnel Record',
-    date: daysAgo(210), sensitivity: 'Confidential', retention: '6 yrs after separation', legalHold: false,
+    date: daysAgo(210), sensitivity: 'Confidential', retention: '6 yrs after separation',
     body: [
       'Employee: Derek Collins. Supervisor: A. Brooks.',
       'Overall rating: Needs improvement. Vehicle logbook incomplete on 9 occasions.',
@@ -202,7 +202,7 @@ const records = [
   },
   {
     id: 'REC-1008', title: 'Utility account history: 8500 block NE 85th St', dept: 'Finance', type: 'Utility Billing',
-    date: daysAgo(12), sensitivity: 'Confidential', retention: '6 yrs', legalHold: false,
+    date: daysAgo(12), sensitivity: 'Confidential', retention: '6 yrs',
     body: [
       'Customer: Helen Brandt. Service address: 8547 NE 85th St, Redmond, WA 98052',
       'Utility account: UB-3310-88214. Card on file: VISA ending 4417',
@@ -216,7 +216,7 @@ const records = [
   },
   {
     id: 'REC-1009', title: 'Building permit BLD-2026-0417: 15800 NE 90th St', dept: 'Planning', type: 'Permit',
-    date: daysAgo(40), sensitivity: 'Public', retention: 'Life of structure', legalHold: false,
+    date: daysAgo(40), sensitivity: 'Public', retention: 'Life of structure',
     body: [
       'Parcel 1225059018. Scope: two-story addition, 640 sq ft.',
       'Applicant: Northshore Design Build, (425) 555-0120.',
@@ -226,7 +226,7 @@ const records = [
   },
   {
     id: 'REC-1010', title: 'City Council regular meeting minutes', dept: 'City Clerk', type: 'Minutes',
-    date: daysAgo(21), sensitivity: 'Public', retention: 'Permanent (archival)', legalHold: false,
+    date: daysAgo(21), sensitivity: 'Public', retention: 'Permanent (archival)',
     body: [
       'Call to order 7:00 p.m. All councilmembers present.',
       'Consent agenda approved 7-0, including ratification of culvert emergency authorization.',
@@ -237,7 +237,7 @@ const records = [
   },
   {
     id: 'REC-1011', title: 'Change request CR-2291: firewall rule update', dept: 'Technology & Information Systems', type: 'IT Change Record',
-    date: daysAgo(9), sensitivity: 'Restricted', retention: '3 yrs', legalHold: false,
+    date: daysAgo(9), sensitivity: 'Restricted', retention: '3 yrs',
     body: [
       'Change: allow SCADA historian replication to DR site.',
       'Source 10.40.12.18 to destination 172.16.8.44 on TCP 1433.',
@@ -247,7 +247,7 @@ const records = [
   },
   {
     id: 'REC-1012', title: 'Facility rental agreement: Anderson Park pavilion', dept: 'Parks & Recreation', type: 'Agreement',
-    date: daysAgo(15), sensitivity: 'Internal', retention: '3 yrs', legalHold: false,
+    date: daysAgo(15), sensitivity: 'Internal', retention: '3 yrs',
     body: [
       'Renter: Tomas Echeverria, (425) 555-0107, tomas.e@gmail.com',
       'Event: family reunion, 60 guests, Saturday 10 a.m. to 4 p.m.',
@@ -259,7 +259,7 @@ const records = [
   },
   {
     id: 'REC-1013', title: 'EMS incident report: Fire Station 11 response', dept: 'Fire', type: 'Incident Report',
-    date: daysAgo(6), sensitivity: 'Restricted (HIPAA)', retention: '10 yrs', legalHold: false,
+    date: daysAgo(6), sensitivity: 'Restricted (HIPAA)', retention: '10 yrs',
     body: [
       'Unit M11 dispatched 14:05 to Marymoor Park ball fields.',
       'Patient: 54-year-old male, chest pain, history of hypertension. Transported to Evergreen Health.',
@@ -271,7 +271,7 @@ const records = [
   },
   {
     id: 'REC-1014', title: 'Destruction log: FY2019 accounts payable records', dept: 'City Clerk', type: 'Destruction Log',
-    date: daysAgo(45), sensitivity: 'Public', retention: 'Permanent (archival)', legalHold: false,
+    date: daysAgo(45), sensitivity: 'Public', retention: 'Permanent (archival)',
     body: [
       'Series: accounts payable vouchers FY2019 (GS 03-04-2019). Retention met.',
       'Approved for destruction via electronic signature; 14 boxes shredded on site.'
@@ -283,6 +283,38 @@ const records = [
 // ---------------------------------------------------------------------------
 // Simulated AI: pattern rules + recognized entities -> suggested redactions
 // ---------------------------------------------------------------------------
+
+// Older records so the retention view has material eligible for disposition.
+records.push(
+  {
+    id: 'REC-0901', title: 'Facility rental agreements: Parks, 2021 season', dept: 'Parks & Recreation', type: 'Agreement',
+    date: daysAgo(365 * 4 + 40), sensitivity: 'Internal', retention: '3 yrs after event',
+    body: ['142 pavilion and field rental agreements, 2021 season.', 'Deposits reconciled with Finance; no open claims.'], entities: []
+  },
+  {
+    id: 'REC-0902', title: 'Utility billing adjustments FY2019', dept: 'Finance', type: 'Utility Billing',
+    date: daysAgo(365 * 6 + 210), sensitivity: 'Confidential', retention: '6 yrs after fiscal year',
+    body: ['Leak adjustment and billing correction register, FY2019.', '318 adjustments; audited in FY2020 State Auditor review.'], entities: []
+  },
+  {
+    id: 'REC-0903', title: 'Email: trail maintenance crew scheduling (2022)', dept: 'Public Works', type: 'Email',
+    date: daysAgo(365 * 3 + 25), sensitivity: 'Internal', retention: '2 yrs',
+    body: ['Routine crew rotation and equipment scheduling for trail maintenance, spring 2022.'], entities: []
+  },
+  {
+    id: 'REC-0904', title: 'Claim file CL-2018-044: sidewalk trip and fall, NE 83rd St', dept: 'City Clerk', type: 'Claim File',
+    date: daysAgo(365 * 7 + 15), sensitivity: 'Confidential', retention: '6 yrs after closure',
+    body: ['Claim for damages filed March 2018; denied; lawsuit filed in King County Superior Court.', 'Litigation ongoing; preserve all related records.'], entities: []
+  }
+);
+
+// Retention in years from the record date (null = permanent / archival / until an event closes).
+const RETENTION_YEARS = {
+  'REC-1001': 6, 'REC-1002': null, 'REC-1003': 2, 'REC-1004': 6, 'REC-1005': null, 'REC-1006': 6, 'REC-1007': 6,
+  'REC-1008': 6, 'REC-1009': null, 'REC-1010': null, 'REC-1011': 3, 'REC-1012': 3, 'REC-1013': 10, 'REC-1014': null,
+  'REC-0901': 3, 'REC-0902': 6, 'REC-0903': 2, 'REC-0904': 6
+};
+records.forEach((r) => { r.retentionYears = RETENTION_YEARS[r.id] ?? null; });
 
 const CITY_DOMAIN = /@redmond\.gov$/i;
 const CITY_PHONE = /^\(425\) 556-/;
@@ -374,6 +406,7 @@ let nextRedactionId = 1;
 
 function logAudit(entry) {
   audit.unshift({ ...entry, ts: entry.ts ?? new Date(), user: entry.actor === 'AI' ? 'Redaction model v2.3' : (entry.user ?? role().user) });
+  audit.sort((a, b) => b.ts - a.ts);
 }
 
 function getRecord(id) {
@@ -446,6 +479,98 @@ function deliverRequest(req, ts) {
   logAudit({ ts, actor: 'Human', action: 'Delivered to GovQA', requestId: req.id, detail: 'Released copies and exemption log uploaded to requester portal' });
 }
 
+// ---------------------------------------------------------------------------
+// Retention, legal holds, disposition
+// ---------------------------------------------------------------------------
+
+const holds = [
+  { id: 'LH-2026-01', matter: 'Moreau v. City of Redmond: Bear Creek Trail flooding claim', recordIds: ['REC-1001', 'REC-1002', 'REC-1003'], placedBy: 'City Attorney\'s Office', date: daysAgo(50), active: true },
+  { id: 'LH-2025-07', matter: 'CL-2018-044 sidewalk claim: King County Superior Court litigation', recordIds: ['REC-0904'], placedBy: 'City Attorney\'s Office', date: daysAgo(410), active: true },
+  { id: 'LH-2026-03', matter: 'RPD-26-003902 active investigation', recordIds: ['REC-1005'], placedBy: 'Police Department', date: daysAgo(33), active: true }
+];
+let nextHoldNum = 4;
+
+const batches = []; // destruction logs
+let nextBatchNum = 14;
+
+const APPROVERS = [
+  { role: 'Department Director', name: 'M. Hughes' },
+  { role: 'Records Officer (City Clerk)', name: 'C. Ruiz' }
+];
+
+function activeHold(rec) {
+  return holds.find((h) => h.active && h.recordIds.includes(rec.id));
+}
+
+function isHeld(rec) {
+  return !!activeHold(rec);
+}
+
+function eligibleDate(rec) {
+  if (rec.retentionYears == null) return null;
+  const d = new Date(rec.date);
+  d.setFullYear(d.getFullYear() + rec.retentionYears);
+  return startOfDay(d);
+}
+
+// Why a record can or can't be destroyed today.
+function disposition(rec) {
+  if (rec.destroyed) return { code: 'destroyed', label: `Destroyed ${fmtDate(rec.destroyed.date)}` };
+  const due = eligibleDate(rec);
+  const hold = activeHold(rec);
+  const holdNote = hold ? ` · hold ${hold.id}` : '';
+  if (!due) return { code: 'permanent', label: `Permanent / event-based${holdNote}` };
+  if (due > TODAY) return { code: 'active', label: `Retain until ${fmtDate(due)}${holdNote}` };
+  if (hold) return { code: 'hold', label: `Blocked: legal hold ${hold.id}` };
+  const prr = requests.find((q) => q.status !== 'Delivered' && q.recordIds.includes(rec.id));
+  if (prr) return { code: 'prr', label: `Blocked: open request ${prr.id}` };
+  const batch = batches.find((b) => b.status !== 'Destroyed' && b.recordIds.includes(rec.id));
+  if (batch) return { code: 'batch', label: `In destruction log ${batch.id}` };
+  return { code: 'eligible', label: `Eligible since ${fmtDate(due)}` };
+}
+
+function createBatch(recordIds) {
+  const batch = {
+    id: `DL-2026-${String(nextBatchNum++).padStart(3, '0')}`, recordIds, createdAt: new Date(), createdBy: role().user,
+    steps: APPROVERS.map((a) => ({ ...a, signedAt: null })), status: 'Pending approval'
+  };
+  batches.unshift(batch);
+  logAudit({ actor: 'Human', action: 'Created destruction log', detail: `${batch.id}: ${plural(recordIds.length, 'record')} routed to ${APPROVERS.map((a) => a.name).join(' → ')}` });
+  return batch;
+}
+
+function signBatch(batch) {
+  const step = batch.steps.find((s) => !s.signedAt);
+  if (!step) return;
+  step.signedAt = new Date();
+  if (batch.steps.every((s) => s.signedAt)) batch.status = 'Approved';
+  logAudit({ actor: 'Human', user: step.name, action: 'E-signed destruction log', detail: `${batch.id} approved by ${step.role}` });
+}
+
+function executeBatch(batch) {
+  // Re-check blockers at execution time: a hold or request may have appeared since approval.
+  const blocked = batch.recordIds.filter((id) => ['hold', 'prr'].includes(disposition({ ...getRecord(id), destroyed: null }).code));
+  batch.recordIds.filter((id) => !blocked.includes(id)).forEach((id) => {
+    const rec = getRecord(id);
+    rec.destroyed = { date: new Date(), batchId: batch.id };
+    logAudit({ actor: 'Human', action: 'Destroyed record', recordId: id, detail: `Retention met (${rec.retention}). Certificate of destruction in ${batch.id}` });
+  });
+  batch.status = 'Destroyed';
+  batch.blocked = blocked;
+  batch.executedAt = new Date();
+  return blocked;
+}
+
+// Nightly job flags records whose retention period has been met.
+function seedRetentionAlerts() {
+  records.forEach((rec) => {
+    const due = eligibleDate(rec);
+    if (due && due <= TODAY) {
+      logAudit({ ts: daysAgo(0, 2, 0), actor: 'System', user: 'Retention job', action: 'Retention period met', recordId: rec.id, detail: `${rec.title}: ${rec.retention}${isHeld(rec) ? ` · on legal hold ${activeHold(rec).id}` : ''}` });
+    }
+  });
+}
+
 // Seed: one request already completed end to end, so the history isn't empty.
 (function seedHistory() {
   const done = getRequest('PRR-26-1175');
@@ -456,6 +581,7 @@ function deliverRequest(req, ts) {
   done.user = 'S. Chen';
   audit.filter((a) => a.requestId === done.id && a.actor === 'Human').forEach((a) => { a.user = 'S. Chen'; });
 })();
+seedRetentionAlerts();
 
 // ---------------------------------------------------------------------------
 // UI state + helpers
@@ -468,7 +594,8 @@ const BADGE = {
   Received: 'open', 'In Review': 'in-progress', Released: 'complete', Delivered: 'complete',
   pending: 'in-progress', accepted: 'overdue', rejected: 'neutral',
   Public: 'complete', Internal: 'open', Confidential: 'in-progress', Restricted: 'overdue',
-  AI: 'ai', Human: 'human', Overdue: 'overdue', 'Legal hold': 'overdue'
+  AI: 'ai', Human: 'human', System: 'system', Overdue: 'overdue', 'Legal hold': 'overdue',
+  Eligible: 'in-progress', 'Pending approval': 'in-progress', Approved: 'open', Destroyed: 'neutral'
 };
 
 function badge(label, key = label) {
@@ -497,7 +624,8 @@ const TITLES = {
   requests: ['Public Records', 'Requests'],
   request: ['Public Records · Request', 'Review & release'],
   records: ['Enterprise Content', 'Records Library'],
-  audit: ['AI Governance', 'AI & Audit Trail']
+  audit: ['AI Governance', 'AI & Audit Trail'],
+  retention: ['Records Management', 'Retention & Legal Holds']
 };
 
 function go(view, id) {
@@ -619,7 +747,7 @@ function renderRequestWorkspace() {
 function renderAddResults(req) {
   const q = $('addRecordSearch').value.trim().toLowerCase();
   if (!q) { $('addRecordResults').innerHTML = ''; return; }
-  const matches = records.filter((r) => canView(r) && !req.recordIds.includes(r.id) && (r.title + ' ' + r.body.join(' ') + ' ' + r.dept).toLowerCase().includes(q)).slice(0, 5);
+  const matches = records.filter((r) => canView(r) && !r.destroyed && !req.recordIds.includes(r.id) && (r.title + ' ' + r.body.join(' ') + ' ' + r.dept).toLowerCase().includes(q)).slice(0, 5);
   $('addRecordResults').innerHTML = matches.map((r) => `
     <li><button type="button" data-add-record="${r.id}"><strong>+</strong> ${escapeHtml(r.title)} <span class="muted small">${r.dept}</span></button></li>`).join('')
     || '<li class="empty-state small">No matching records.</li>';
@@ -638,7 +766,7 @@ function renderDocument(req, locked) {
   const viewable = canView(rec) && !rec.partitioned;
   const act = !locked && canReview(rec);
   $('docTitle').textContent = rec.title;
-  $('docMeta').innerHTML = `${rec.id} · ${rec.dept} · ${rec.type} · ${fmtDate(rec.date)} · ${badge(rec.sensitivity, rec.sensitivity)}${rec.legalHold ? ' ' + badge('Legal hold') : ''}`;
+  $('docMeta').innerHTML = `${rec.id} · ${rec.dept} · ${rec.type} · ${fmtDate(rec.date)} · ${badge(rec.sensitivity, rec.sensitivity)}${isHeld(rec) ? ' ' + badge('Legal hold') : ''}`;
   document.querySelectorAll('#docToggle button').forEach((b) => {
     b.classList.toggle('active', b.dataset.mode === ui.docMode);
     b.disabled = !viewable || (b.dataset.mode === 'released' && !locked);
@@ -738,7 +866,7 @@ function renderRecords() {
   const q = $('recSearch').value.trim().toLowerCase();
   const dept = $('recDeptFilter').value;
   const type = $('recTypeFilter').value;
-  const visible = records.filter(canView);
+  const visible = records.filter((r) => canView(r) && !r.destroyed);
   const hidden = records.length - visible.length;
   const list = visible.filter((r) => (!dept || r.dept === dept) && (!type || r.type === type)
     && (!q || (r.title + ' ' + r.body.join(' ') + ' ' + r.id).toLowerCase().includes(q)));
@@ -753,7 +881,7 @@ function renderRecords() {
       <td class="nowrap">${fmtDate(r.date)}</td>
       <td>${badge(r.sensitivity, r.sensitivity)}</td>
       <td class="small">${escapeHtml(r.retention)}</td>
-      <td>${r.legalHold ? badge('Legal hold') : '<span class="muted small">Active</span>'}</td>
+      <td>${isHeld(r) ? badge(`Hold ${activeHold(r).id}`, 'Legal hold') : disposition(r).code === 'eligible' ? badge('Eligible for destruction', 'Eligible') : '<span class="muted small">Active</span>'}</td>
     </tr>`).join('') || '<tr><td colspan="7" class="empty-state">No records match these filters.</td></tr>';
 
   const rec = getRecord(ui.recordDetailId);
@@ -770,7 +898,7 @@ function renderRecords() {
       <div><span class="meta-label">Department</span><strong>${escapeHtml(rec.dept)}</strong></div>
       <div><span class="meta-label">Sensitivity</span>${badge(rec.sensitivity, rec.sensitivity)}</div>
       <div><span class="meta-label">Retention</span><strong>${escapeHtml(rec.retention)}</strong></div>
-      <div><span class="meta-label">Legal hold</span><strong>${rec.legalHold ? 'Yes: deletion blocked' : 'No'}</strong></div>
+      <div><span class="meta-label">Legal hold</span><strong>${isHeld(rec) ? `${activeHold(rec).id}: deletion blocked` : 'No'}</strong></div>
     </div>
     ${rec.partitioned ? '<p class="lock-msg">🔒 <strong>Partitioned: active investigation.</strong> Only assigned detectives can open this case file.</p>' : `<div class="doc-body mode-original">${rec.body.map((t, i) => `<p><span class="ln">${i + 1}</span>${escapeHtml(t)}</p>`).join('')}</div>`}
     <p class="small muted">Used in requests: ${usedIn.length ? usedIn.map((r) => `<a href="#/request/${r.id}" data-open-request="${r.id}">${r.id}</a>`).join(', ') : 'none'}</p>`;
@@ -795,11 +923,95 @@ function renderAudit() {
   $('auditList').innerHTML = auditItems(audit.filter((a) => !actor || a.actor === actor)) || '<li class="empty-state">No entries.</li>';
 }
 
+const selectedForBatch = new Set();
+
+function renderRetention() {
+  const manage = role().manage;
+  const live = records.filter((r) => canView(r) && !r.destroyed);
+  const disp = new Map(live.map((r) => [r.id, disposition(r)]));
+  const count = (code) => [...disp.values()].filter((d) => d.code === code).length;
+  const awaiting = batches.filter((b) => b.status !== 'Destroyed').length;
+
+  $('retKpis').innerHTML = [
+    ['Eligible for destruction', count('eligible'), 'Retention period met, no blockers', 'accent-gold'],
+    ['Blocked by legal hold', count('hold'), `${holds.filter((h) => h.active).length} active holds`, 'accent-red'],
+    ['Blocked by open request', count('prr'), 'Preserved while a PRR is pending', 'accent-blue'],
+    ['Destruction logs in approval', awaiting, `${batches.filter((b) => b.status === 'Destroyed').length} completed`, 'accent-green']
+  ].map(([label, value, sub, cls]) => `
+    <div class="kpi-card ${cls}"><span class="kpi-label">${label}</span><strong>${value}</strong><small>${sub}</small></div>`).join('');
+
+  // Only offer selection for records that are still eligible
+  [...selectedForBatch].forEach((id) => { if (disp.get(id)?.code !== 'eligible') selectedForBatch.delete(id); });
+
+  const order = { eligible: 0, hold: 1, prr: 2, batch: 3, active: 4, permanent: 5 };
+  const rows = [...live].sort((a, b) => order[disp.get(a.id).code] - order[disp.get(b.id).code] || (eligibleDate(a) ?? Infinity) - (eligibleDate(b) ?? Infinity));
+  const statusBadge = { eligible: 'in-progress', hold: 'overdue', prr: 'open', batch: 'open', active: 'complete', permanent: 'neutral' };
+
+  $('retentionTableBody').innerHTML = rows.map((r) => {
+    const d = disp.get(r.id);
+    const eligible = d.code === 'eligible';
+    return `
+    <tr class="${eligible ? 'row-eligible' : ''}">
+      <td class="check-col">${eligible && manage ? `<input type="checkbox" data-select-record="${r.id}" ${selectedForBatch.has(r.id) ? 'checked' : ''} aria-label="Select ${escapeHtml(r.title)}" />` : ''}</td>
+      <td><strong>${escapeHtml(r.title)}</strong><div class="mono small muted">${r.id} · ${fmtDate(r.date)}</div></td>
+      <td>${escapeHtml(r.dept)}</td>
+      <td class="small">${escapeHtml(r.retention)}</td>
+      <td><span class="status-badge ${statusBadge[d.code]}">${escapeHtml(d.label)}</span></td>
+      <td>${manage && !isHeld(r) && d.code !== 'permanent' ? `<button class="mini-btn" type="button" data-quick-hold="${r.id}">Hold</button>` : ''}</td>
+    </tr>`;
+  }).join('');
+
+  const eligibleIds = rows.filter((r) => disp.get(r.id).code === 'eligible').map((r) => r.id);
+  $('selectAllEligible').disabled = !manage || !eligibleIds.length;
+  $('selectAllEligible').checked = eligibleIds.length > 0 && eligibleIds.every((id) => selectedForBatch.has(id));
+  $('createBatchBtn').disabled = !manage || selectedForBatch.size === 0;
+  $('createBatchBtn').textContent = !manage ? 'Coordinator creates logs' : `Create destruction log${selectedForBatch.size ? ` (${selectedForBatch.size})` : ''}`;
+
+  $('batchList').innerHTML = batches.map((b) => {
+    const next = b.steps.find((s) => !s.signedAt);
+    return `
+    <div class="batch">
+      <div class="batch-head"><strong class="mono">${b.id}</strong>${badge(b.status)}</div>
+      <div class="small muted">Created by ${escapeHtml(b.createdBy)} · ${fmtDateTime(b.createdAt)}</div>
+      <ul class="batch-records">${b.recordIds.map((id) => {
+        const rec = getRecord(id);
+        return `<li class="${rec.destroyed ? 'tombstone' : ''}"><span class="mono small">${id}</span> ${escapeHtml(rec.title)} <span class="muted small">· ${escapeHtml(rec.retention)}</span>${b.blocked?.includes(id) ? ' ' + badge('Skipped: now blocked', 'Legal hold') : ''}</li>`;
+      }).join('')}</ul>
+      <ol class="sign-steps">${b.steps.map((s) => `<li class="${s.signedAt ? 'signed' : ''}">${s.signedAt ? '✓' : '○'} ${escapeHtml(s.role)}: ${escapeHtml(s.name)}${s.signedAt ? ` <span class="muted small">signed ${fmtDateTime(s.signedAt)}</span>` : ''}</li>`).join('')}</ol>
+      ${manage && next ? `<button class="secondary-btn" type="button" data-sign-batch="${b.id}">Simulate e-signature: ${escapeHtml(next.name)}</button>` : ''}
+      ${manage && b.status === 'Approved' ? `<button class="danger-btn" type="button" data-execute-batch="${b.id}">Execute destruction</button>` : ''}
+      ${b.status === 'Destroyed' ? `<p class="small muted">Destroyed ${fmtDateTime(b.executedAt)}. This log is retained permanently as the certificate of destruction.</p>` : ''}
+    </div>`;
+  }).join('') || '<p class="empty-state">No destruction logs yet. Select eligible records above to start one.</p>';
+
+  $('holdList').innerHTML = holds.filter((h) => h.active).map((h) => `
+    <li>
+      <div class="batch-head"><strong class="mono">${h.id}</strong>${manage ? `<button class="mini-btn" type="button" data-release-hold="${h.id}">Release hold</button>` : ''}</div>
+      <div>${escapeHtml(h.matter)}</div>
+      <div class="small muted">Placed by ${escapeHtml(h.placedBy)} · ${fmtDate(h.date)} · ${h.recordIds.map((id) => canView(getRecord(id)) ? id : 'restricted record').join(', ')}</div>
+    </li>`).join('') || '<li class="empty-state">No active legal holds.</li>';
+
+  $('holdForm').classList.toggle('hidden', !manage);
+  const holdable = live.filter((r) => !isHeld(r) && disposition(r).code !== 'permanent');
+  const current = $('holdRecord').value;
+  $('holdRecord').innerHTML = holdable.map((r) => `<option value="${r.id}" ${r.id === current ? 'selected' : ''}>${r.id} · ${escapeHtml(r.title)}</option>`).join('');
+}
+
+function placeHold(recordId, matter) {
+  const hold = { id: `LH-2026-${String(nextHoldNum++).padStart(2, '0')}`, matter, recordIds: [recordId], placedBy: role().user, date: new Date(), active: true };
+  holds.unshift(hold);
+  logAudit({ actor: 'Human', action: 'Placed legal hold', recordId, detail: `${hold.id}: ${matter}` });
+  return hold;
+}
+
 function render() {
+  const eligibleNow = records.filter((r) => canView(r) && !r.destroyed && disposition(r).code === 'eligible').length;
+  $('navEligibleCount').textContent = eligibleNow || '';
   renderRequests();
   if (ui.view === 'request') renderRequestWorkspace();
   if (ui.view === 'records') renderRecords();
   if (ui.view === 'audit') renderAudit();
+  if (ui.view === 'retention') renderRetention();
 }
 
 // ---------------------------------------------------------------------------
@@ -941,6 +1153,69 @@ $('recordDetail').addEventListener('click', (e) => {
 });
 $('auditActorFilter').addEventListener('change', renderAudit);
 
+// Retention & holds
+$('retentionTableBody').addEventListener('change', (e) => {
+  const box = e.target.closest('[data-select-record]');
+  if (!box) return;
+  if (box.checked) selectedForBatch.add(box.dataset.selectRecord); else selectedForBatch.delete(box.dataset.selectRecord);
+  renderRetention();
+});
+$('selectAllEligible').addEventListener('change', (e) => {
+  records.filter((r) => canView(r) && !r.destroyed && disposition(r).code === 'eligible')
+    .forEach((r) => (e.target.checked ? selectedForBatch.add(r.id) : selectedForBatch.delete(r.id)));
+  renderRetention();
+});
+$('retentionTableBody').addEventListener('click', (e) => {
+  const btn = e.target.closest('[data-quick-hold]');
+  if (!btn || !role().manage) return;
+  const hold = placeHold(btn.dataset.quickHold, 'Anticipated litigation: preserve pending review');
+  render();
+  showToast(`${hold.id} placed on ${btn.dataset.quickHold}. It can't be destroyed until the hold is released.`);
+});
+$('createBatchBtn').addEventListener('click', () => {
+  if (!role().manage || !selectedForBatch.size) return;
+  const batch = createBatch([...selectedForBatch]);
+  selectedForBatch.clear();
+  render();
+  showToast(`${batch.id} created and routed to ${APPROVERS.map((a) => a.name).join(' → ')} for e-signature.`);
+});
+$('batchList').addEventListener('click', (e) => {
+  if (!role().manage) return;
+  const sign = e.target.closest('[data-sign-batch]');
+  const exec = e.target.closest('[data-execute-batch]');
+  if (sign) {
+    const b = batches.find((x) => x.id === sign.dataset.signBatch);
+    signBatch(b);
+    render();
+    showToast(b.status === 'Approved' ? `${b.id} fully approved. Ready to execute.` : `${b.id} signed. Routed to next approver.`);
+  }
+  if (exec) {
+    const b = batches.find((x) => x.id === exec.dataset.executeBatch);
+    const blocked = executeBatch(b);
+    render();
+    showToast(`${plural(b.recordIds.length - blocked.length, 'record')} destroyed under ${b.id}.${blocked.length ? ` ${blocked.length} skipped: newly blocked.` : ''} Certificate retained.`);
+  }
+});
+$('holdList').addEventListener('click', (e) => {
+  const btn = e.target.closest('[data-release-hold]');
+  if (!btn || !role().manage) return;
+  const hold = holds.find((h) => h.id === btn.dataset.releaseHold);
+  hold.active = false;
+  logAudit({ actor: 'Human', action: 'Released legal hold', detail: `${hold.id}: ${hold.matter}. Covered records resume normal retention` });
+  render();
+  showToast(`${hold.id} released. Covered records resume normal retention.`);
+});
+$('placeHoldBtn').addEventListener('click', () => {
+  if (!role().manage) return;
+  const recordId = $('holdRecord').value;
+  const matter = $('holdMatter').value.trim();
+  if (!recordId || !matter) { showToast('Enter a matter and choose a record.'); return; }
+  const hold = placeHold(recordId, matter);
+  $('holdMatter').value = '';
+  render();
+  showToast(`${hold.id} placed on ${recordId}.`);
+});
+
 $('roleSelect').addEventListener('change', (e) => {
   roleKey = e.target.value;
   $('roleHint').textContent = role().hint;
@@ -956,10 +1231,10 @@ $('roleSelect').addEventListener('change', (e) => {
 [...new Set(records.map((r) => r.dept))].sort().forEach((d) => $('recDeptFilter').insertAdjacentHTML('beforeend', `<option>${escapeHtml(d)}</option>`));
 [...new Set(records.map((r) => r.type))].sort().forEach((t) => $('recTypeFilter').insertAdjacentHTML('beforeend', `<option>${escapeHtml(t)}</option>`));
 $('todayPill').textContent = TODAY.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
-['recSearch', 'recDeptFilter', 'recTypeFilter', 'auditActorFilter', 'addRecordSearch'].forEach((id) => { $(id).value = ''; });
+['recSearch', 'recDeptFilter', 'recTypeFilter', 'auditActorFilter', 'addRecordSearch', 'holdMatter'].forEach((id) => { $(id).value = ''; });
 $('roleSelect').value = 'coordinator';
 $('roleHint').textContent = role().hint;
 
 const [, route, param] = location.hash.split('/');
 if (route === 'request' && getRequest(param)) go('request', param);
-else go(['requests', 'records', 'audit'].includes(route) ? route : 'requests');
+else go(['requests', 'records', 'audit', 'retention'].includes(route) ? route : 'requests');

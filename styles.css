@@ -419,3 +419,30 @@ mark.red.rejected { background: transparent; color: inherit; border-bottom: 2px 
   .main-panel { padding: 14px; }
   .filter-row input { width: 100%; }
 }
+
+/* Retention & holds ------------------------------------------------------- */
+
+.status-badge.system { background: #e0f2fe; color: #0369a1; }
+
+.check-col { width: 36px; }
+.check-col input { width: auto; }
+.row-eligible { background: #fffbeb; }
+
+.danger-btn {
+  border: none; border-radius: 10px; background: var(--red); color: white;
+  padding: 10px 14px; font-weight: 700; cursor: pointer;
+}
+.danger-btn:hover { filter: brightness(1.1); }
+
+.batch { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-bottom: 10px; display: flex; flex-direction: column; gap: 6px; }
+.batch-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.batch-records { margin: 4px 0; padding-left: 18px; font-size: 0.86rem; line-height: 1.6; }
+.batch-records .tombstone { color: var(--muted); text-decoration: line-through; }
+.sign-steps { list-style: none; margin: 0; padding: 0; font-size: 0.84rem; line-height: 1.7; color: var(--muted); }
+.sign-steps .signed { color: var(--green); font-weight: 600; }
+.batch .secondary-btn, .batch .danger-btn { align-self: flex-start; }
+
+.hold-list { list-style: none; margin: 0 0 12px; padding: 0; }
+.hold-list li:not(.empty-state) { border: 1px solid #f5c2bd; background: #fff7f6; border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; line-height: 1.5; }
+.hold-form { display: grid; grid-template-columns: 1fr; gap: 8px; padding-top: 10px; border-top: 1px solid var(--line); }
+.hold-form .secondary-btn { justify-self: start; }
