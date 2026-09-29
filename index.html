@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Records Hub · Public Records Demo</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand-block">
+          <div class="brand-mark">RH</div>
+          <div>
+            <div class="eyebrow">City of Redmond · ECM</div>
+            <h1>Records Hub</h1>
+          </div>
+        </div>
+
+        <nav class="nav">
+          <button class="nav-item" data-view="requests">Public Records Requests <span class="nav-count" id="navOpenCount"></span></button>
+          <button class="nav-item" data-view="records">Records Library</button>
+          <button class="nav-item" data-view="audit">AI &amp; Audit Trail</button>
+        </nav>
+
+        <div class="role-card">
+          <span class="mini-label">Signed in as</span>
+          <strong class="user-name">K. Alvarez</strong>
+          <span class="role-hint">PRR Coordinator · City Clerk</span>
+          <button id="resetDemoBtn" class="reset-btn" type="button">Reset demo data</button>
+        </div>
+      </aside>
+
+      <main class="main-panel">
+        <header class="topbar">
+          <div>
+            <div class="eyebrow muted" id="viewEyebrow">Public Records</div>
+            <h2 id="viewTitle">Requests</h2>
+          </div>
+          <div class="pill-row">
+            <span class="status-pill neutral">Prototype · sample data</span>
+            <span class="status-pill neutral" id="todayPill"></span>
+          </div>
+        </header>
+
+        <!-- Requests queue -->
+        <section id="view-requests" class="view">
+          <div class="kpi-grid" id="prrKpis"></div>
+          <div class="panel">
+            <div class="panel-header">
+              <h3>Request queue</h3>
+              <span class="tag">Intake from GovQA</span>
+            </div>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Request</th>
+                    <th>Requester</th>
+                    <th>Received</th>
+                    <th>5-day response due</th>
+                    <th class="num">Records</th>
+                    <th class="num">Awaiting review</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="requestTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Request workspace -->
+        <section id="view-request" class="view">
+          <div class="panel request-header">
+            <div class="request-head-top">
+              <div>
+                <button class="link-btn" id="backToQueue" type="button">← All requests</button>
+                <h3 id="reqTitle"></h3>
+                <p class="muted" id="reqMeta"></p>
+              </div>
+              <div class="request-actions">
+                <button class="primary-btn" id="releaseBtn" type="button">Approve &amp; release</button>
+                <button class="secondary-btn" id="deliverBtn" type="button">Send to GovQA portal</button>
+              </div>
+            </div>
+            <ol class="stepper" id="reqStepper"></ol>
+          </div>
+
+          <div class="workspace">
+            <div class="panel ws-records">
+              <div class="panel-header">
+                <h3>Responsive records</h3>
+                <span class="tag" id="wsRecordCount"></span>
+              </div>
+              <ul class="record-list" id="wsRecordList"></ul>
+              <div class="add-record">
+                <input id="addRecordSearch" type="search" placeholder="Search library to add a record…" aria-label="Search records to add" />
+                <ul class="add-results" id="addRecordResults"></ul>
+              </div>
+            </div>
+
+            <div class="panel ws-doc">
+              <div class="panel-header">
+                <div>
+                  <h3 id="docTitle">Select a record</h3>
+                  <span class="muted small" id="docMeta"></span>
+                </div>
+                <div class="doc-toggle" id="docToggle">
+                  <button type="button" data-mode="review" class="active">Review</button>
+                  <button type="button" data-mode="released">Released copy</button>
+                  <button type="button" data-mode="original">Original</button>
+                </div>
+              </div>
+              <div class="doc-legend" id="docLegend">
+                <span><i class="sw pending"></i>AI suggestion (pending)</span>
+                <span><i class="sw accepted"></i>Will be redacted</span>
+                <span><i class="sw rejected"></i>Rejected (stays visible)</span>
+              </div>
+              <div class="doc-body" id="docBody"></div>
+              <div class="manual-bar" id="manualBar">
+                <span class="muted small">Missed something? Select text in the document, pick an exemption, then:</span>
+                <select id="manualRcw" aria-label="Exemption for manual redaction"></select>
+                <button class="secondary-btn" id="manualRedactBtn" type="button">Redact selection</button>
+              </div>
+            </div>
+
+            <div class="panel ws-suggestions">
+              <div class="panel-header">
+                <h3>Redactions</h3>
+                <span class="tag" id="suggCount"></span>
+              </div>
+              <button class="secondary-btn full" id="acceptHighBtn" type="button">Accept all ≥ 90% confidence</button>
+              <ul class="sugg-list" id="suggList"></ul>
+              <p class="fine-print">RCW citations are AI suggestions for demo purposes. Final exemption decisions are made by City staff.</p>
+            </div>
+          </div>
+
+          <div class="content-grid two-col">
+            <div class="panel">
+              <div class="panel-header">
+                <h3>Exemption log</h3>
+                <span class="tag">Provided to requester</span>
+              </div>
+              <div class="table-wrap">
+                <table class="data-table compact">
+                  <thead>
+                    <tr><th>Record</th><th>Line</th><th>Redacted item</th><th>Exemption</th><th>Explanation</th></tr>
+                  </thead>
+                  <tbody id="exemptionLogBody"></tbody>
+                </table>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">
+                <h3>Request audit trail</h3>
+                <span class="tag">AI vs. human actions</span>
+              </div>
+              <ul class="audit-list" id="reqAuditList"></ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Records library -->
+        <section id="view-records" class="view">
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <h3>Records library</h3>
+                <span class="muted small" id="recordCount"></span>
+              </div>
+              <div class="filter-row">
+                <select id="recDeptFilter" aria-label="Filter by department"><option value="">All departments</option></select>
+                <select id="recTypeFilter" aria-label="Filter by record type"><option value="">All types</option></select>
+                <input id="recSearch" type="search" placeholder="Full-text search…" aria-label="Search records" />
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr><th>Record</th><th>Department</th><th>Type</th><th>Date</th><th>Sensitivity</th><th>Retention</th><th>Status</th></tr>
+                </thead>
+                <tbody id="recordTableBody"></tbody>
+              </table>
+            </div>
+            <div id="recordDetail" class="record-detail hidden"></div>
+          </div>
+        </section>
+
+        <!-- Audit -->
+        <section id="view-audit" class="view">
+          <div class="kpi-grid" id="aiKpis"></div>
+          <div class="panel">
+            <div class="panel-header">
+              <h3>Audit trail</h3>
+              <div class="filter-row">
+                <select id="auditActorFilter" aria-label="Filter by actor">
+                  <option value="">AI and human</option>
+                  <option value="AI">AI only</option>
+                  <option value="Human">Human only</option>
+                </select>
+              </div>
+            </div>
+            <ul class="audit-list" id="auditList"></ul>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
