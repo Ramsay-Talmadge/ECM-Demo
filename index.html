@@ -24,9 +24,13 @@
         </nav>
 
         <div class="role-card">
-          <span class="mini-label">Signed in as</span>
-          <strong class="user-name">K. Alvarez</strong>
-          <span class="role-hint">PRR Coordinator · City Clerk</span>
+          <label class="mini-label" for="roleSelect">Signed in as (demo)</label>
+          <select id="roleSelect">
+            <option value="coordinator">K. Alvarez · PRR Coordinator</option>
+            <option value="police">R. Okafor · Police Records</option>
+            <option value="viewer">J. Tran · Parks staff (read-only)</option>
+          </select>
+          <span class="role-hint" id="roleHint"></span>
           <button id="resetDemoBtn" class="reset-btn" type="button">Reset demo data</button>
         </div>
       </aside>
@@ -85,6 +89,7 @@
               </div>
             </div>
             <ol class="stepper" id="reqStepper"></ol>
+            <div class="role-banner hidden" id="roleBanner"></div>
           </div>
 
           <div class="workspace">

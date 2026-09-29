@@ -62,7 +62,40 @@ const RCW = {
   '70.02': 'Health care information (RCW 70.02)'
 };
 
-const CURRENT_USER = 'K. Alvarez';
+// ---------------------------------------------------------------------------
+// Roles & permissions (demo stand-ins for Entra ID groups)
+// ---------------------------------------------------------------------------
+
+const ROLES = {
+  coordinator: {
+    user: 'K. Alvarez', title: 'PRR Coordinator · City Clerk', manage: true, review: true,
+    hint: 'Manages requests and releases. Reviews non-restricted records; police (CJIS), health and IT-security records need a department specialist.'
+  },
+  police: {
+    user: 'R. Okafor', title: 'Records Specialist · Police', manage: false, review: true,
+    hint: 'Can open CJIS records and review redactions on police records only. The Clerk releases.'
+  },
+  viewer: {
+    user: 'J. Tran', title: 'Staff · Parks & Recreation', manage: false, review: false, dept: 'Parks & Recreation',
+    hint: 'Read-only. Sees public records plus internal Parks records. Search hides everything else.'
+  }
+};
+
+let roleKey = 'coordinator';
+const role = () => ROLES[roleKey];
+const CURRENT_USER = ROLES.coordinator.user;
+
+function canView(rec) {
+  const restricted = rec.sensitivity.startsWith('Restricted');
+  if (roleKey === 'coordinator') return !restricted;
+  if (roleKey === 'police') return rec.dept === 'Police' || rec.sensitivity === 'Public' || rec.sensitivity === 'Internal';
+  return rec.sensitivity === 'Public' || (rec.dept === role().dept && !restricted);
+}
+
+function canReview(rec) {
+  if (!role().review || !canView(rec) || rec.partitioned) return false;
+  return roleKey === 'police' ? rec.dept === 'Police' : true;
+}
 
 // ---------------------------------------------------------------------------
 // Records library
@@ -130,7 +163,7 @@ const records = [
   },
   {
     id: 'REC-1005', title: 'Case file RPD-26-003902: burglary (active investigation)', dept: 'Police', type: 'Case File',
-    date: daysAgo(33), sensitivity: 'Restricted (CJIS)', retention: 'Until case closed + 6 yrs', legalHold: true,
+    date: daysAgo(33), sensitivity: 'Restricted (CJIS)', retention: 'Until case closed + 6 yrs', legalHold: true, partitioned: true,
     body: [
       'ACTIVE INVESTIGATION: partitioned case file, access limited to assigned detectives.',
       'Lead detective: Det. R. Castillo #2861.',
@@ -340,7 +373,7 @@ let releasedCopies = {}; // `${requestId}|${recordId}` -> string[]
 let nextRedactionId = 1;
 
 function logAudit(entry) {
-  audit.unshift({ ...entry, ts: entry.ts ?? new Date(), user: entry.actor === 'AI' ? 'Redaction model v2.3' : (entry.user ?? CURRENT_USER) });
+  audit.unshift({ ...entry, ts: entry.ts ?? new Date(), user: entry.actor === 'AI' ? 'Redaction model v2.3' : (entry.user ?? role().user) });
 }
 
 function getRecord(id) {
@@ -477,7 +510,7 @@ function go(view, id) {
       ui.recordId = req.recordIds[0] ?? null;
       ui.docMode = req.status === 'Released' || req.status === 'Delivered' ? 'released' : 'review';
     }
-    const suggested = startReview(req);
+    const suggested = role().review ? startReview(req) : 0;
     if (suggested) showToast(`AI scanned ${plural(req.recordIds.length, 'record')} and suggested ${plural(suggested, 'redaction')}. Nothing is redacted until you approve.`);
   }
   document.querySelectorAll('.view').forEach((v) => v.classList.toggle('active', v.id === `view-${view}`));
@@ -533,7 +566,17 @@ function renderRequestWorkspace() {
   const req = getRequest(ui.requestId);
   if (!req) return;
   const locked = req.status === 'Released' || req.status === 'Delivered';
+  const manage = role().manage;
   const totalPending = pendingCount(req.id);
+
+  const banner = $('roleBanner');
+  const hiddenHere = req.recordIds.filter((id) => !canView(getRecord(id))).length;
+  banner.classList.toggle('hidden', manage && !hiddenHere);
+  banner.innerHTML = !role().review
+    ? `<strong>Read-only:</strong> ${escapeHtml(role().user)} can follow this request but can't review or release it.`
+    : !manage
+      ? `<strong>${escapeHtml(role().title)}:</strong> you can review redactions on police records. The City Clerk approves the release.`
+      : `<strong>${plural(hiddenHere, 'restricted record')}</strong> in this request ${hiddenHere === 1 ? 'is' : 'are'} reviewed by a department records specialist. Your role can't open CJIS content.`;
 
   $('reqTitle').innerHTML = `<span class="mono">${req.id}</span> · ${escapeHtml(req.requester)}`;
   $('reqMeta').textContent = `${req.description} Received ${fmtDate(req.received)} · 5-day response due ${fmtDate(dueDate(req))} · Assigned to ${req.assignee}`;
@@ -542,9 +585,9 @@ function renderRequestWorkspace() {
   $('reqStepper').innerHTML = STATUSES.map((s, i) => `<li class="${i < step ? 'done' : i === step ? 'current' : ''}">${s}</li>`).join('');
 
   const releaseBtn = $('releaseBtn');
-  releaseBtn.disabled = locked || totalPending > 0 || req.recordIds.length === 0;
-  releaseBtn.textContent = locked ? 'Released' : totalPending > 0 ? `Review ${totalPending} pending first` : 'Approve & release';
-  $('deliverBtn').disabled = req.status !== 'Released';
+  releaseBtn.disabled = locked || !manage || totalPending > 0 || req.recordIds.length === 0;
+  releaseBtn.textContent = locked ? 'Released' : totalPending > 0 ? `${totalPending} pending review` : !manage ? 'Clerk approves release' : 'Approve & release';
+  $('deliverBtn').disabled = req.status !== 'Released' || !manage;
   $('deliverBtn').textContent = req.status === 'Delivered' ? 'Delivered to GovQA ✓' : 'Send to GovQA portal';
 
   // Responsive records list
@@ -555,17 +598,17 @@ function renderRequestWorkspace() {
     const accepted = redactionsFor(req.id, id).filter((r) => r.status === 'accepted').length;
     return `
     <li class="${id === ui.recordId ? 'active' : ''}" data-record-id="${id}">
-      <div class="rl-title">${escapeHtml(rec.title)}</div>
+      <div class="rl-title">${canView(rec) ? '' : '<span class="lock" title="Restricted for your role">🔒</span> '}${escapeHtml(rec.title)}</div>
       <div class="rl-meta">
         <span class="muted small">${rec.dept}</span>
         ${pending ? `<span class="status-badge in-progress">${pending} pending</span>` : `<span class="status-badge ${accepted ? 'overdue' : 'complete'}">${accepted ? `${accepted} redacted` : 'no redactions'}</span>`}
-        ${!locked ? `<button class="icon-btn" data-remove-record="${id}" title="Remove from request" aria-label="Remove ${escapeHtml(rec.title)} from request">✕</button>` : ''}
+        ${!locked && manage ? `<button class="icon-btn" data-remove-record="${id}" title="Remove from request" aria-label="Remove ${escapeHtml(rec.title)} from request">✕</button>` : ''}
       </div>
     </li>`;
   }).join('') || '<li class="empty-state">No records attached yet.</li>';
 
-  $('addRecordSearch').disabled = locked;
-  $('addRecordSearch').placeholder = locked ? 'Request released: records locked' : 'Search library to add a record…';
+  $('addRecordSearch').disabled = locked || !manage;
+  $('addRecordSearch').placeholder = locked ? 'Request released: records locked' : !manage ? 'Coordinator adds records' : 'Search library to add a record…';
   renderAddResults(req);
   renderDocument(req, locked);
   renderSuggestions(req, locked);
@@ -576,7 +619,7 @@ function renderRequestWorkspace() {
 function renderAddResults(req) {
   const q = $('addRecordSearch').value.trim().toLowerCase();
   if (!q) { $('addRecordResults').innerHTML = ''; return; }
-  const matches = records.filter((r) => !req.recordIds.includes(r.id) && (r.title + ' ' + r.body.join(' ') + ' ' + r.dept).toLowerCase().includes(q)).slice(0, 5);
+  const matches = records.filter((r) => canView(r) && !req.recordIds.includes(r.id) && (r.title + ' ' + r.body.join(' ') + ' ' + r.dept).toLowerCase().includes(q)).slice(0, 5);
   $('addRecordResults').innerHTML = matches.map((r) => `
     <li><button type="button" data-add-record="${r.id}"><strong>+</strong> ${escapeHtml(r.title)} <span class="muted small">${r.dept}</span></button></li>`).join('')
     || '<li class="empty-state small">No matching records.</li>';
@@ -592,14 +635,24 @@ function renderDocument(req, locked) {
     return;
   }
   if (!locked && ui.docMode === 'released') ui.docMode = 'review';
+  const viewable = canView(rec) && !rec.partitioned;
+  const act = !locked && canReview(rec);
   $('docTitle').textContent = rec.title;
   $('docMeta').innerHTML = `${rec.id} · ${rec.dept} · ${rec.type} · ${fmtDate(rec.date)} · ${badge(rec.sensitivity, rec.sensitivity)}${rec.legalHold ? ' ' + badge('Legal hold') : ''}`;
   document.querySelectorAll('#docToggle button').forEach((b) => {
     b.classList.toggle('active', b.dataset.mode === ui.docMode);
-    b.disabled = b.dataset.mode === 'released' && !locked;
+    b.disabled = !viewable || (b.dataset.mode === 'released' && !locked);
   });
-  $('docLegend').classList.toggle('hidden', ui.docMode !== 'review');
-  $('manualBar').classList.toggle('hidden', locked || ui.docMode !== 'review');
+  $('docLegend').classList.toggle('hidden', !viewable || ui.docMode !== 'review');
+  $('manualBar').classList.toggle('hidden', !act || ui.docMode !== 'review');
+
+  if (!viewable) {
+    docBody.className = 'doc-body locked-doc';
+    docBody.innerHTML = rec.partitioned
+      ? '<p class="lock-msg">🔒 <strong>Partitioned: active investigation.</strong><br>Only assigned detectives can open this case file.</p>'
+      : `<p class="lock-msg">🔒 <strong>Restricted for your role.</strong><br>${escapeHtml(rec.sensitivity)} content is reviewed by a ${escapeHtml(rec.dept)} records specialist. Access follows Entra ID group membership, and every attempt is logged.</p>`;
+    return;
+  }
 
   const lines = ui.docMode === 'released'
     ? (releasedCopies[`${req.id}|${rec.id}`] ?? rec.body).map((text) => escapeHtml(text)
@@ -624,10 +677,16 @@ function markLine(text, reds) {
 }
 
 function renderSuggestions(req, locked) {
+  const rec = getRecord(ui.recordId);
   const reds = redactionsFor(req.id, ui.recordId);
   const pending = reds.filter((r) => r.status === 'pending').length;
+  const act = !!rec && !locked && canReview(rec);
   $('suggCount').textContent = `${reds.length} items · ${pending} pending`;
-  $('acceptHighBtn').disabled = locked || !reds.some((r) => r.status === 'pending' && r.conf >= 0.9);
+  $('acceptHighBtn').disabled = !act || !reds.some((r) => r.status === 'pending' && r.conf >= 0.9);
+  if (rec && (!canView(rec) || rec.partitioned)) {
+    $('suggList').innerHTML = `<li class="empty-state">${pending ? `${plural(pending, 'suggestion')} waiting for a ${escapeHtml(rec.dept)} reviewer.` : 'Reviewed by department specialist.'} Details hidden for your role.</li>`;
+    return;
+  }
 
   const rcwOptions = (selected) => Object.keys(RCW).map((code) => `<option value="${code}" ${code === selected ? 'selected' : ''}>RCW ${code}</option>`).join('');
 
@@ -639,8 +698,8 @@ function renderSuggestions(req, locked) {
       </div>
       <div class="sugg-text">"${escapeHtml(r.text)}"</div>
       <div class="sugg-controls">
-        <select data-rcw-for="${r.id}" ${locked ? 'disabled' : ''} aria-label="Exemption">${rcwOptions(r.rcw)}</select>
-        ${locked ? badge(r.status === 'accepted' ? 'Redacted' : 'Not redacted', r.status) : `
+        <select data-rcw-for="${r.id}" ${act ? '' : 'disabled'} aria-label="Exemption">${rcwOptions(r.rcw)}</select>
+        ${!act ? badge(r.status === 'accepted' ? 'Redacted' : r.status === 'rejected' ? 'Not redacted' : 'Pending review', r.status) : `
         <button type="button" class="mini-btn ${r.status === 'accepted' ? 'on' : ''}" data-act="accepted" data-id="${r.id}">Redact</button>
         <button type="button" class="mini-btn ${r.status === 'rejected' ? 'on' : ''}" data-act="rejected" data-id="${r.id}">Keep visible</button>`}
       </div>
@@ -669,7 +728,7 @@ function auditItems(entries) {
       <span class="actor">${badge(a.actor)}</span>
       <div>
         <div><strong>${escapeHtml(a.action)}</strong>${a.recordId ? ` <span class="mono small muted">${a.recordId}</span>` : ''} <span class="mono small muted">${a.requestId ?? ''}</span></div>
-        <div class="small">${escapeHtml(a.detail)}</div>
+        <div class="small">${a.recordId && !canView(getRecord(a.recordId)) ? '<span class="muted">Details hidden: restricted record</span>' : escapeHtml(a.detail)}</div>
         <div class="small muted">${escapeHtml(a.user)} · ${fmtDateTime(a.ts)}</div>
       </div>
     </li>`).join('');
@@ -679,10 +738,13 @@ function renderRecords() {
   const q = $('recSearch').value.trim().toLowerCase();
   const dept = $('recDeptFilter').value;
   const type = $('recTypeFilter').value;
-  const list = records.filter((r) => (!dept || r.dept === dept) && (!type || r.type === type)
+  const visible = records.filter(canView);
+  const hidden = records.length - visible.length;
+  const list = visible.filter((r) => (!dept || r.dept === dept) && (!type || r.type === type)
     && (!q || (r.title + ' ' + r.body.join(' ') + ' ' + r.id).toLowerCase().includes(q)));
 
-  $('recordCount').textContent = q || dept || type ? `${list.length} of ${records.length} records` : `${records.length} records · full-text indexed`;
+  $('recordCount').textContent = (q || dept || type ? `${list.length} of ${visible.length} records` : `${visible.length} records · full-text indexed`)
+    + (hidden ? ` · ${hidden} hidden by your permissions` : '');
   $('recordTableBody').innerHTML = list.map((r) => `
     <tr class="clickable-row ${r.id === ui.recordDetailId ? 'selected' : ''}" data-record-detail="${r.id}" tabindex="0">
       <td><strong>${escapeHtml(r.title)}</strong><div class="mono small muted">${r.id}</div></td>
@@ -710,7 +772,7 @@ function renderRecords() {
       <div><span class="meta-label">Retention</span><strong>${escapeHtml(rec.retention)}</strong></div>
       <div><span class="meta-label">Legal hold</span><strong>${rec.legalHold ? 'Yes: deletion blocked' : 'No'}</strong></div>
     </div>
-    <div class="doc-body mode-original">${rec.body.map((t, i) => `<p><span class="ln">${i + 1}</span>${escapeHtml(t)}</p>`).join('')}</div>
+    ${rec.partitioned ? '<p class="lock-msg">🔒 <strong>Partitioned: active investigation.</strong> Only assigned detectives can open this case file.</p>' : `<div class="doc-body mode-original">${rec.body.map((t, i) => `<p><span class="ln">${i + 1}</span>${escapeHtml(t)}</p>`).join('')}</div>`}
     <p class="small muted">Used in requests: ${usedIn.length ? usedIn.map((r) => `<a href="#/request/${r.id}" data-open-request="${r.id}">${r.id}</a>`).join(', ') : 'none'}</p>`;
 }
 
@@ -806,6 +868,7 @@ $('suggList').addEventListener('click', (e) => {
   const btn = e.target.closest('button[data-act]');
   if (!btn) return;
   const r = redactions.find((x) => x.id === Number(btn.dataset.id));
+  if (!canReview(getRecord(r.recordId))) return;
   setStatus(r, btn.dataset.act);
   render();
 });
@@ -814,12 +877,14 @@ $('suggList').addEventListener('change', (e) => {
   const sel = e.target.closest('select[data-rcw-for]');
   if (!sel) return;
   const r = redactions.find((x) => x.id === Number(sel.dataset.rcwFor));
+  if (!canReview(getRecord(r.recordId))) return;
   logAudit({ actor: 'Human', action: 'Changed exemption', requestId: r.requestId, recordId: r.recordId, detail: `${r.type} "${r.text}": RCW ${r.rcw} → RCW ${sel.value}` });
   r.rcw = sel.value;
   render();
 });
 
 $('acceptHighBtn').addEventListener('click', () => {
+  if (!canReview(getRecord(ui.recordId))) return;
   const targets = redactionsFor(ui.requestId, ui.recordId).filter((r) => r.status === 'pending' && r.conf >= 0.9);
   targets.forEach((r) => setStatus(r, 'accepted'));
   render();
@@ -833,6 +898,7 @@ $('manualRedactBtn').addEventListener('click', () => {
   if (!text || !p) { showToast('Select some text in the document first.'); return; }
   const line = Number(p.dataset.line);
   const rec = getRecord(ui.recordId);
+  if (!canReview(rec)) return;
   const source = rec.body[line];
   const existing = redactionsFor(ui.requestId, ui.recordId).filter((r) => r.line === line);
   let start = source.indexOf(text);
@@ -848,7 +914,7 @@ $('manualRedactBtn').addEventListener('click', () => {
 
 $('releaseBtn').addEventListener('click', () => {
   const req = getRequest(ui.requestId);
-  if (pendingCount(req.id) > 0) return;
+  if (pendingCount(req.id) > 0 || !role().manage) return;
   releaseRequest(req);
   ui.docMode = 'released';
   render();
@@ -857,7 +923,7 @@ $('releaseBtn').addEventListener('click', () => {
 
 $('deliverBtn').addEventListener('click', () => {
   const req = getRequest(ui.requestId);
-  if (req.status !== 'Released') return;
+  if (req.status !== 'Released' || !role().manage) return;
   deliverRequest(req);
   render();
   showToast(`${req.id} delivered to the GovQA portal with its exemption log.`);
@@ -875,6 +941,14 @@ $('recordDetail').addEventListener('click', (e) => {
 });
 $('auditActorFilter').addEventListener('change', renderAudit);
 
+$('roleSelect').addEventListener('change', (e) => {
+  roleKey = e.target.value;
+  $('roleHint').textContent = role().hint;
+  if (ui.recordDetailId && !canView(getRecord(ui.recordDetailId))) ui.recordDetailId = null;
+  render();
+  showToast(`Signed in as ${role().user} (${role().title}). Search, records and actions now follow this role.`);
+});
+
 // ---------------------------------------------------------------------------
 // Init
 // ---------------------------------------------------------------------------
@@ -883,6 +957,8 @@ $('auditActorFilter').addEventListener('change', renderAudit);
 [...new Set(records.map((r) => r.type))].sort().forEach((t) => $('recTypeFilter').insertAdjacentHTML('beforeend', `<option>${escapeHtml(t)}</option>`));
 $('todayPill').textContent = TODAY.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
 ['recSearch', 'recDeptFilter', 'recTypeFilter', 'auditActorFilter', 'addRecordSearch'].forEach((id) => { $(id).value = ''; });
+$('roleSelect').value = 'coordinator';
+$('roleHint').textContent = role().hint;
 
 const [, route, param] = location.hash.split('/');
 if (route === 'request' && getRequest(param)) go('request', param);
